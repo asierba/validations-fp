@@ -13,12 +13,13 @@ This function should validate the following:
 * The supplied age must be a number and must be between one and a hundred and twenty.
 * The supplied email address must not be empty and must have at least a single @ character.
 
-The idea is to implement error handling it in different ways. Split this in 4 iterations
+The idea is to implement error handling in different ways. Do it in 4 iterations
 
 1. Using Exceptions
-1. Using Option
-1. Using Either
-1. Using Validated from cats
+1. Using [Option](https://www.scala-lang.org/api/current/scala/Option.html)
+1. Using [Either](https://www.scala-lang.org/api/2.9.3/scala/Either.html)
+1. Using [Try](https://www.scala-lang.org/api/2.9.3/scala/util/Try.html)
+1. Using [Validated from cats](https://typelevel.org/cats/datatypes/validated.html)
 
 At the end of each iteration reflect. Do you like prefer way of doing error handling or the previous one? Why? Which are the tradeoffs of using different approaches?
 
