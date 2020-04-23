@@ -15,10 +15,10 @@ This function should validate the following:
 
 The idea is to implement error handling it in different ways. Split this in 4 iterations
 
-Iteration 1: Use exceptions
-Iteration 2: Options
-Iteration 3: Either
-Iteration 4: Validated from cats
+1. Using Exceptions
+1. Using Option
+1. Using Either
+1. Using Validated from cats
 
 At the end of each iteration reflect. Do you like prefer way of doing error handling or the previous one? Why? Which are the tradeoffs of using different approaches?
 
