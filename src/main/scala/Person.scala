@@ -19,6 +19,7 @@ object Person {
     }
     val validatedEmail = email match {
       case "" => throw InvalidEmailException()
+      case e if !e.contains('@') => throw InvalidEmailException()
       case _ => email
     }
     Person(validatedName, validatedAge, validatedEmail)

@@ -39,5 +39,11 @@ class PersonSpec extends AnyFunSpec with Matchers {
         Person.create("John Doe", 65, "")
       }
     }
+
+    it("should not create person when email has not a @ character") {
+      assertThrows[InvalidEmailException] {
+        Person.create("John Doe", 65, "john.doeATgoogle.com")
+      }
+    }
   }
 }
