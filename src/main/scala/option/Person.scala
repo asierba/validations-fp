@@ -5,7 +5,9 @@ case class Person(name: String, age: Int, email: String) {}
 object Person {
   def create(name: String, age: Int, email: String): Option[Person] = {
     try {
-      validateName(name).map(name => Person(name, validateAge(age), validateEmail(email)))
+      validateName(name)
+        .flatMap(name => validateAge(age)
+          .map(age => Person(name, validateAge(age), validateEmail(email))))
     } catch {
       case _: Exception => None
     }
@@ -22,11 +24,11 @@ object Person {
     }
   }
 
-  private def validateAge(age: Int): Int = {
+  private def validateAge(age: Int): Option[Int] = {
     age match {
       case i if i < MINIMUM_AGE || i > MAXIMUM_AGE =>
-        throw InvalidAgeException()
-      case _ => age
+        None
+      case _ => Some(age)
     }
   }
 
