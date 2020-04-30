@@ -4,28 +4,16 @@ case class Person(name: String, age: Int, email: String) {}
 
 object Person {
   def create(name: String, age: Int, email: String): Option[Person] = {
-    try {
-      validateName(name)
-        .flatMap(name => validateAge(age)
-          .flatMap(age => validateEmailOption(email)
-            .map(email => Person(name, age, email))))
-    } catch {
-      case _: Exception => None
-    }
+    validateName(name)
+      .flatMap(name => validateAge(age)
+        .flatMap(age => validateEmail(email)
+          .map(email => Person(name, age, email))))
   }
 
   val MINIMUM_AGE = 1
   val MAXIMUM_AGE = 120
 
-  private def validateEmail(email: String): String = {
-    email match {
-      case ""                    => throw InvalidEmailException()
-      case e if !e.contains('@') => throw InvalidEmailException()
-      case _                     => email
-    }
-  }
-
-  private def validateEmailOption(email: String): Option[String] = {
+  private def validateEmail(email: String): Option[String] = {
     email match {
       case ""                    => None
       case e if !e.contains('@') => None
@@ -50,9 +38,3 @@ object Person {
     }
   }
 }
-
-case class InvalidNameException() extends Exception
-
-case class InvalidAgeException() extends Exception
-
-case class InvalidEmailException() extends Exception
