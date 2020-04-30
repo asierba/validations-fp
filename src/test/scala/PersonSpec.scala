@@ -10,12 +10,6 @@ class PersonSpec extends AnyFunSpec with Matchers {
       actual shouldEqual expected
     }
 
-    it("should create valid person 2") {
-      val expected = Person("David", 65, "david@thoughtworks.com")
-      val actual = Person.create("David", 65, "david@thoughtworks.com")
-      actual shouldEqual expected
-    }
-
     it("should not create person when name is empty") {
       assertThrows[InvalidNameException] {
         Person.create("", 65, "david@thoughtworks.com")
@@ -37,6 +31,12 @@ class PersonSpec extends AnyFunSpec with Matchers {
     it("should not create person when age is below the minimum age") {
       assertThrows[InvalidAgeException] {
         Person.create("Asier", Person.MINIMUM_AGE - 1, "david@thoughtworks.com")
+      }
+    }
+
+    it("should not create person when email is empty") {
+      assertThrows[InvalidEmailException] {
+        Person.create("John Doe", 65, "")
       }
     }
   }

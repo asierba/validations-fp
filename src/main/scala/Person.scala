@@ -17,10 +17,16 @@ object Person {
       case i if i < MINIMUM_AGE || i > MAXIMUM_AGE => throw InvalidAgeException()
       case _ => age
     }
-    Person(validatedName, validatedAge, email)
+    val validatedEmail = email match {
+      case "" => throw InvalidEmailException()
+      case _ => email
+    }
+    Person(validatedName, validatedAge, validatedEmail)
   }
 }
 
 case class InvalidNameException() extends Exception
 
 case class InvalidAgeException() extends Exception
+
+case class InvalidEmailException() extends Exception
