@@ -8,14 +8,15 @@ class PersonSpec extends AnyFunSpec with Matchers {
   describe("A exception.Person") {
     it("should create valid person") {
       val expected = Person("John Doe", 18, "johndoe@example.com")
-      val actual = Person.create("John Doe", 18, "johndoe@example.com")
-      actual shouldEqual expected
+      val actual = Person.createOption("John Doe", 18, "johndoe@example.com")
+      actual shouldEqual Some(expected)
     }
 
     it("should not create person when name is empty") {
       assertThrows[InvalidNameException] {
         Person.create("", 65, "david@thoughtworks.com")
       }
+      Person.createOption("", 65, "david@thoughtworks.com") shouldEqual None
     }
 
     it("should not create person when name does not start with uppercase") {

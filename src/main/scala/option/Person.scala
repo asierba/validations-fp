@@ -1,11 +1,16 @@
 package option
 
-
-case class Person(name: String, age: Int, email: String) {
-
-}
+case class Person(name: String, age: Int, email: String) {}
 
 object Person {
+  def createOption(name: String, age: Int, email: String): Option[Person] = {
+    try {
+      Some(Person(validateName(name), validateAge(age), validateEmail(email)))
+    } catch {
+      case _: Exception => None
+    }
+  }
+
   val MINIMUM_AGE = 1
   val MAXIMUM_AGE = 120
 
@@ -15,15 +20,16 @@ object Person {
 
   private def validateEmail(email: String): String = {
     email match {
-      case "" => throw InvalidEmailException()
+      case ""                    => throw InvalidEmailException()
       case e if !e.contains('@') => throw InvalidEmailException()
-      case _ => email
+      case _                     => email
     }
   }
 
   private def validateAge(age: Int): Int = {
     age match {
-      case i if i < MINIMUM_AGE || i > MAXIMUM_AGE => throw InvalidAgeException()
+      case i if i < MINIMUM_AGE || i > MAXIMUM_AGE =>
+        throw InvalidAgeException()
       case _ => age
     }
   }
@@ -31,7 +37,8 @@ object Person {
   private def validateName(name: String): String = {
     name match {
       case "" => throw InvalidNameException()
-      case s if s.charAt(0) != s.toUpperCase().charAt(0) => throw InvalidNameException()
+      case s if s.charAt(0) != s.toUpperCase().charAt(0) =>
+        throw InvalidNameException()
       case _ => name
     }
   }
