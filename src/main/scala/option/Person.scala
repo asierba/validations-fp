@@ -3,7 +3,7 @@ package option
 case class Person(name: String, age: Int, email: String) {}
 
 object Person {
-  def createOption(name: String, age: Int, email: String): Option[Person] = {
+  def create(name: String, age: Int, email: String): Option[Person] = {
     try {
       Some(Person(validateName(name), validateAge(age), validateEmail(email)))
     } catch {
@@ -13,10 +13,6 @@ object Person {
 
   val MINIMUM_AGE = 1
   val MAXIMUM_AGE = 120
-
-  def create(name: String, age: Int, email: String): Person = {
-    Person(validateName(name), validateAge(age), validateEmail(email))
-  }
 
   private def validateEmail(email: String): String = {
     email match {
