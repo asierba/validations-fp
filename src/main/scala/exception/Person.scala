@@ -1,3 +1,5 @@
+package exception
+
 
 case class Person(name: String, age: Int, email: String) {
 

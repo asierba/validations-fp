@@ -1,9 +1,11 @@
+package option
+
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
 
 class PersonSpec extends AnyFunSpec with Matchers {
-  describe("A Person") {
+  describe("A exception.Person") {
     it("should create valid person") {
       val expected = Person("John Doe", 18, "johndoe@example.com")
       val actual = Person.create("John Doe", 18, "johndoe@example.com")
