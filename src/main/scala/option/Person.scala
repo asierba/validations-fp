@@ -4,10 +4,11 @@ case class Person(name: String, age: Int, email: String) {}
 
 object Person {
   def create(name: String, age: Int, email: String): Option[Person] = {
-    validateName(name)
-      .flatMap(name => validateAge(age)
-        .flatMap(age => validateEmail(email)
-          .map(email => Person(name, age, email))))
+    for {
+      name <- validateName(name)
+      age <- validateAge(age)
+      email <- validateEmail(email)
+    } yield Person(name, age, email)
   }
 
   val MINIMUM_AGE = 1
