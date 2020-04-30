@@ -19,7 +19,7 @@ class PersonSpec extends AnyFunSpec with Matchers {
     }
 
     it("should not create person when name does not start with uppercase") {
-      assertThrows[InvalidNameException] {
+      assertThrows[Invals idNameException] {
         Person.create("asier", 65, "david@thoughtworks.com")
       }
     }
