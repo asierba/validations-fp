@@ -7,7 +7,8 @@ object Person {
     try {
       validateName(name)
         .flatMap(name => validateAge(age)
-          .map(age => Person(name, validateAge(age), validateEmail(email))))
+          .flatMap(age => validateEmailOption(email)
+            .map(email => Person(name, age, email))))
     } catch {
       case _: Exception => None
     }
@@ -21,6 +22,14 @@ object Person {
       case ""                    => throw InvalidEmailException()
       case e if !e.contains('@') => throw InvalidEmailException()
       case _                     => email
+    }
+  }
+
+  private def validateEmailOption(email: String): Option[String] = {
+    email match {
+      case ""                    => None
+      case e if !e.contains('@') => None
+      case _                     => Some(email)
     }
   }
 
