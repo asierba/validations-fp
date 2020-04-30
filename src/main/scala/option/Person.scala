@@ -5,7 +5,7 @@ case class Person(name: String, age: Int, email: String) {}
 object Person {
   def create(name: String, age: Int, email: String): Option[Person] = {
     try {
-      Some(Person(validateName(name), validateAge(age), validateEmail(email)))
+      validateName(name).map(name => Person(name, validateAge(age), validateEmail(email)))
     } catch {
       case _: Exception => None
     }
@@ -30,12 +30,12 @@ object Person {
     }
   }
 
-  private def validateName(name: String): String = {
+  private def validateName(name: String): Option[String] = {
     name match {
-      case "" => throw InvalidNameException()
+      case "" => None
       case s if s.charAt(0) != s.toUpperCase().charAt(0) =>
-        throw InvalidNameException()
-      case _ => name
+        None
+      case _ => Some(name)
     }
   }
 }
