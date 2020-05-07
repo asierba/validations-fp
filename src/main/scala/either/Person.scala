@@ -4,7 +4,7 @@ import either.InvalidError.InvalidError
 
 object InvalidError extends Enumeration {
   type InvalidError = Value
-  val InvalidNameError, InvalidAgeError = Value
+  val InvalidNameError, InvalidAgeError, InvalidEmailError = Value
 }
 
 case class Person(name: String, age: Int, email: String) {}
@@ -20,8 +20,9 @@ object Person {
     try {
       Right(create(name, age, email))
     } catch {
-      case _: InvalidNameException => Left(InvalidError.InvalidNameError)
-      case _: InvalidAgeException  => Left(InvalidError.InvalidAgeError)
+      case _: InvalidNameException  => Left(InvalidError.InvalidNameError)
+      case _: InvalidAgeException   => Left(InvalidError.InvalidAgeError)
+      case _: InvalidEmailException => Left(InvalidError.InvalidEmailError)
     }
   }
   def create(name: String, age: Int, email: String): Person = {
