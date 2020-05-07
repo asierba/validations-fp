@@ -4,18 +4,17 @@ import either.InvalidError.InvalidError
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
-
 class PersonSpec extends AnyFunSpec with Matchers {
   describe("An Either.Person") {
     it("should create valid person") {
-      val expected = Person("John Doe", 18, "johndoe@example.com")
-      val actual = Person.create("John Doe", 18, "johndoe@example.com")
-      actual shouldEqual expected
+      val actual = Person.createEither("John Doe", 18, "johndoe@example.com")
+
+      actual shouldEqual Right(Person("John Doe", 18, "johndoe@example.com"))
     }
 
-
     it("should not create person when name is empty") {
-      val person: Either[InvalidError, Person] = Person.createEither("", 65, "david@thoughtworks.com")
+      val person: Either[InvalidError, Person] =
+        Person.createEither("", 65, "david@thoughtworks.com")
       person shouldEqual Left(InvalidError.InvalidNameError)
     }
 
