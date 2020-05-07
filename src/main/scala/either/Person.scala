@@ -18,23 +18,29 @@ object Person {
              age: Int,
              email: String): Either[InvalidError, Person] = {
 
-      val validatedName = name match {
-        case "" => Left(InvalidError.InvalidNameError)
-        case s if s.charAt(0) != s.toUpperCase().charAt(0) =>
-          Left(InvalidError.InvalidNameError)
-        case _ => Right(name)
-      }
-      val validatedAge = age match {
-        case i if i < MINIMUM_AGE || i > MAXIMUM_AGE =>
-          Left(InvalidError.InvalidAgeError)
-        case _ => Right(age)
-      }
-      val validatedEmail = email match {
-        case ""                    => Left(InvalidError.InvalidEmailError)
-        case e if !e.contains('@') => Left(InvalidError.InvalidEmailError)
-        case _                     => Right(email)
-      }
-      validatedName.flatMap(name => validatedAge.flatMap(age => validatedEmail.flatMap(email => Right(Person(name,age,email)))))
+    val validatedName = name match {
+      case "" => Left(InvalidError.InvalidNameError)
+      case s if s.charAt(0) != s.toUpperCase().charAt(0) =>
+        Left(InvalidError.InvalidNameError)
+      case _ => Right(name)
+    }
+    val validatedAge = age match {
+      case i if i < MINIMUM_AGE || i > MAXIMUM_AGE =>
+        Left(InvalidError.InvalidAgeError)
+      case _ => Right(age)
+    }
+    val validatedEmail = email match {
+      case "" => Left(InvalidError.InvalidEmailError)
+      case e if !e.contains('@') => Left(InvalidError.InvalidEmailError)
+      case _ => Right(email)
+    }
+
+    for {
+      name <- validatedName
+      age <- validatedAge
+      email <- validatedEmail
+    } yield Person(name, age, email)
+
   }
 }
 
