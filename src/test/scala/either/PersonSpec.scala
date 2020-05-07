@@ -44,15 +44,17 @@ class PersonSpec extends AnyFunSpec with Matchers {
     }
 
     it("should not create person when email is empty") {
-      assertThrows[InvalidEmailException] {
-        Person.create("John Doe", 65, "")
-      }
+      val person: Either[InvalidError, Person] =
+        Person.createEither("John Doe", 65, "")
+
+      person shouldEqual Left(InvalidError.InvalidEmailError)
     }
 
     it("should not create person when email has not a @ character") {
-      assertThrows[InvalidEmailException] {
-        Person.create("John Doe", 65, "john.doeATgoogle.com")
-      }
+      val person: Either[InvalidError, Person] =
+        Person.createEither("John Doe", 65, "john.doeATgoogle.com")
+
+      person shouldEqual Left(InvalidError.InvalidEmailError)
     }
   }
 }
