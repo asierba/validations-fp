@@ -17,29 +17,24 @@ object Person {
   def create(name: String,
              age: Int,
              email: String): Either[InvalidError, Person] = {
-    try {
+
       val validatedName = name match {
-        case "" => throw InvalidNameException()
+        case "" => Left(InvalidError.InvalidNameError)
         case s if s.charAt(0) != s.toUpperCase().charAt(0) =>
-          throw InvalidNameException()
-        case _ => name
+          Left(InvalidError.InvalidNameError)
+        case _ => Right(name)
       }
       val validatedAge = age match {
         case i if i < MINIMUM_AGE || i > MAXIMUM_AGE =>
-          throw InvalidAgeException()
-        case _ => age
+          Left(InvalidError.InvalidAgeError)
+        case _ => Right(age)
       }
       val validatedEmail = email match {
-        case ""                    => throw InvalidEmailException()
-        case e if !e.contains('@') => throw InvalidEmailException()
-        case _                     => email
+        case ""                    => Left(InvalidError.InvalidEmailError)
+        case e if !e.contains('@') => Left(InvalidError.InvalidEmailError)
+        case _                     => Right(email)
       }
-      Right(Person(validatedName, validatedAge, validatedEmail))
-    } catch {
-      case _: InvalidNameException  => Left(InvalidError.InvalidNameError)
-      case _: InvalidAgeException   => Left(InvalidError.InvalidAgeError)
-      case _: InvalidEmailException => Left(InvalidError.InvalidEmailError)
-    }
+      validatedName.flatMap(name => validatedAge.flatMap(age => validatedEmail.flatMap(email => Right(Person(name,age,email)))))
   }
 }
 
