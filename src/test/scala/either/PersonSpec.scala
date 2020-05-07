@@ -26,15 +26,21 @@ class PersonSpec extends AnyFunSpec with Matchers {
     }
 
     it("should not create person when age is above the maximum age") {
-      assertThrows[InvalidAgeException] {
-        Person.create("Asier", Person.MAXIMUM_AGE + 1, "david@thoughtworks.com")
-      }
+      val person: Either[InvalidError, Person] = Person.createEither(
+        "Asier",
+        Person.MAXIMUM_AGE + 1,
+        "david@thoughtworks.com"
+      )
+      person shouldEqual Left(InvalidError.InvalidAgeError)
     }
 
     it("should not create person when age is below the minimum age") {
-      assertThrows[InvalidAgeException] {
-        Person.create("Asier", Person.MINIMUM_AGE - 1, "david@thoughtworks.com")
-      }
+      val person: Either[InvalidError, Person] = Person.createEither(
+        "Asier",
+        Person.MINIMUM_AGE - 1,
+        "david@thoughtworks.com"
+      )
+      person shouldEqual Left(InvalidError.InvalidAgeError)
     }
 
     it("should not create person when email is empty") {
