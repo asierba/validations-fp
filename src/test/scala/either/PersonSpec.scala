@@ -19,9 +19,10 @@ class PersonSpec extends AnyFunSpec with Matchers {
     }
 
     it("should not create person when name does not start with uppercase") {
-      assertThrows[InvalidNameException] {
-        Person.create("asier", 65, "david@thoughtworks.com")
-      }
+      val person: Either[InvalidError, Person] =
+        Person.createEither("asier", 65, "david@thoughtworks.com")
+
+      person shouldEqual Left(InvalidError.InvalidNameError)
     }
 
     it("should not create person when age is above the maximum age") {
