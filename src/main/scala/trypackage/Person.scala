@@ -2,9 +2,7 @@ package trypackage
 
 import scala.util.Try
 
-case class Person(name: String, age: Int, email: String) {
-
-}
+case class Person(name: String, age: Int, email: String) {}
 
 object Person {
 
@@ -14,38 +12,25 @@ object Person {
   def create(name: String, age: Int, email: String): Person = {
     val validatedName = name match {
       case "" => throw InvalidNameException()
-      case s if s.charAt(0) != s.toUpperCase().charAt(0) => throw InvalidNameException()
+      case s if s.charAt(0) != s.toUpperCase().charAt(0) =>
+        throw InvalidNameException()
       case _ => name
     }
     val validatedAge = age match {
-      case i if i < MINIMUM_AGE || i > MAXIMUM_AGE => throw InvalidAgeException()
+      case i if i < MINIMUM_AGE || i > MAXIMUM_AGE =>
+        throw InvalidAgeException()
       case _ => age
     }
     val validatedEmail = email match {
-      case "" => throw InvalidEmailException()
+      case ""                    => throw InvalidEmailException()
       case e if !e.contains('@') => throw InvalidEmailException()
-      case _ => email
+      case _                     => email
     }
     Person(validatedName, validatedAge, validatedEmail)
   }
 
   def createWithTry(name: String, age: Int, email: String): Try[Person] = {
     Try(create(name, age, email))
-//    val validatedName = name match {
-//      case "" => throw InvalidNameException()
-//      case s if s.charAt(0) != s.toUpperCase().charAt(0) => throw InvalidNameException()
-//      case _ => name
-//    }
-//    val validatedAge = age match {
-//      case i if i < MINIMUM_AGE || i > MAXIMUM_AGE => throw InvalidAgeException()
-//      case _ => age
-//    }
-//    val validatedEmail = email match {
-//      case "" => throw InvalidEmailException()
-//      case e if !e.contains('@') => throw InvalidEmailException()
-//      case _ => email
-//    }
-//    Try(Person(validatedName, validatedAge, validatedEmail))
   }
 }
 
