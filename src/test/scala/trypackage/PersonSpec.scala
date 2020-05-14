@@ -3,12 +3,14 @@ package trypackage
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
+import scala.util.Success
+
 
 class PersonSpec extends AnyFunSpec with Matchers {
   describe("A try.Person") {
     it("should create valid person") {
-      val expected = Person("John Doe", 18, "johndoe@example.com")
-      val actual = Person.create("John Doe", 18, "johndoe@example.com")
+      val expected = Success(Person("John Doe", 18, "johndoe@example.com"))
+      val actual = Person.createWithTry("John Doe", 18, "johndoe@example.com")
       actual shouldEqual expected
     }
 
