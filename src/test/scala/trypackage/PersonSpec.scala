@@ -3,7 +3,7 @@ package trypackage
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
-import scala.util.Success
+import scala.util.{Failure, Success}
 
 
 class PersonSpec extends AnyFunSpec with Matchers {
@@ -15,14 +15,24 @@ class PersonSpec extends AnyFunSpec with Matchers {
     }
 
     it("should not create person when name is empty") {
-      assertThrows[InvalidNameException] {
-        Person.create("", 65, "david@thoughtworks.com")
+      val tryPerson = Person.createWithTry("", 65, "david@thoughtworks.com")
+      tryPerson match {
+        case Success(_) => fail()
+        case Failure(exception) => exception match {
+          case _: InvalidNameException => true shouldEqual true
+          case _ => fail()
+        }
       }
     }
 
     it("should not create person when name does not start with uppercase") {
-      assertThrows[InvalidNameException] {
-        Person.create("asier", 65, "david@thoughtworks.com")
+      val tryPerson = Person.createWithTry("asier", 65, "david@thoughtworks.com")
+      tryPerson match {
+        case Success(_) => fail()
+        case Failure(exception) => exception match {
+          case _: InvalidNameException => true shouldEqual true
+          case _ => fail()
+        }
       }
     }
 
