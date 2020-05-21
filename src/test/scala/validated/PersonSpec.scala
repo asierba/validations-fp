@@ -21,39 +21,46 @@ class PersonSpec extends AnyFunSpec with Matchers {
         Person.createWithCats("", 65, "david@thoughtworks.com")
       person shouldEqual Invalid(InvalidError.InvalidNameError)
     }
-    
 
     it("should not create person when name does not start with uppercase") {
-      val person: Either[InvalidError, Person] =
-        Person.create("asier", 65, "david@thoughtworks.com")
+      val person: Validated[InvalidError, Person] =
+        Person.createWithCats("asier", 65, "david@thoughtworks.com")
 
-      person shouldEqual Left(InvalidError.InvalidNameError)
+      person shouldEqual Invalid(InvalidError.InvalidNameError)
     }
 
     it("should not create person when age is above the maximum age") {
-      val person: Either[InvalidError, Person] =
-        Person.create("Asier", Person.MAXIMUM_AGE + 1, "david@thoughtworks.com")
-      person shouldEqual Left(InvalidError.InvalidAgeError)
+      val person: Validated[InvalidError, Person] =
+        Person.createWithCats(
+          "Asier",
+          Person.MAXIMUM_AGE + 1,
+          "david@thoughtworks.com"
+        )
+      person shouldEqual Invalid(InvalidError.InvalidAgeError)
     }
 
     it("should not create person when age is below the minimum age") {
-      val person: Either[InvalidError, Person] =
-        Person.create("Asier", Person.MINIMUM_AGE - 1, "david@thoughtworks.com")
-      person shouldEqual Left(InvalidError.InvalidAgeError)
+      val person: Validated[InvalidError, Person] =
+        Person.createWithCats(
+          "Asier",
+          Person.MINIMUM_AGE - 1,
+          "david@thoughtworks.com"
+        )
+      person shouldEqual Invalid(InvalidError.InvalidAgeError)
     }
 
     it("should not create person when email is empty") {
-      val person: Either[InvalidError, Person] =
-        Person.create("John Doe", 65, "")
+      val person: Validated[InvalidError, Person] =
+        Person.createWithCats("John Doe", 65, "")
 
-      person shouldEqual Left(InvalidError.InvalidEmailError)
+      person shouldEqual Invalid(InvalidError.InvalidEmailError)
     }
 
     it("should not create person when email has not a @ character") {
-      val person: Either[InvalidError, Person] =
-        Person.create("John Doe", 65, "john.doeATgoogle.com")
+      val person: Validated[InvalidError, Person] =
+        Person.createWithCats("John Doe", 65, "john.doeATgoogle.com")
 
-      person shouldEqual Left(InvalidError.InvalidEmailError)
+      person shouldEqual Invalid(InvalidError.InvalidEmailError)
     }
   }
 }
