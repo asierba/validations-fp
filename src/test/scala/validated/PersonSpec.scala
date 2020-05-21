@@ -1,6 +1,7 @@
 package validated
 
-import cats.data.Validated.Valid
+import cats.data.Validated
+import cats.data.Validated.{Invalid, Valid}
 import validated.InvalidError.InvalidError
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
@@ -15,14 +16,12 @@ class PersonSpec extends AnyFunSpec with Matchers {
       actual shouldEqual Valid(Person("John Doe", 18, "johndoe@example.com"))
     }
 
-    
-
-
-    it("should not create person when name is empty") {
-      val person: Either[InvalidError, Person] =
-        Person.create("", 65, "david@thoughtworks.com")
-      person shouldEqual Left(InvalidError.InvalidNameError)
+    it("should not create person with cats when name is empty") {
+      val person: Validated[InvalidError, Person] =
+        Person.createWithCats("", 65, "david@thoughtworks.com")
+      person shouldEqual Invalid(InvalidError.InvalidNameError)
     }
+    
 
     it("should not create person when name does not start with uppercase") {
       val person: Either[InvalidError, Person] =

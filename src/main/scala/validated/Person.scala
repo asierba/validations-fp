@@ -1,7 +1,7 @@
 package validated
 
 import cats.data.Validated
-import cats.data.Validated.Valid
+import cats.data.Validated.{Invalid, Valid}
 import validated.InvalidError.InvalidError
 
 object InvalidError extends Enumeration {
@@ -19,8 +19,13 @@ object Person {
 
   def createWithCats(name: String,
                      age: Int,
-                     email: String): Validated[Nothing, Person] = {
-    Valid(Person(name, age, email))
+                     email: String): Validated[InvalidError, Person] = {
+
+    val personWithEither: Either[InvalidError, Person] = create(name, age, email)
+    personWithEither match {
+      case Right(value) => Valid(value)
+      case Left(value) => Invalid(value)
+    }
   }
 
 
