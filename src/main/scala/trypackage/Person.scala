@@ -1,6 +1,8 @@
 package trypackage
 
-import scala.util.Try
+import either.Person
+
+import scala.util.{Failure, Success, Try}
 
 case class Person(name: String, age: Int, email: String) {}
 
@@ -10,26 +12,29 @@ object Person {
   val MAXIMUM_AGE = 120
 
   def create(name: String, age: Int, email: String): Try[Person] = {
-    Try({
       val validatedName = name match {
-        case "" => throw InvalidNameException()
+        case "" => Failure(InvalidNameException())
         case s if s.charAt(0) != s.toUpperCase().charAt(0) =>
-          throw InvalidNameException()
-        case _ => name
+          Failure(InvalidNameException())
+        case _ => Success(name)
       }
       val validatedAge = age match {
         case i if i < MINIMUM_AGE || i > MAXIMUM_AGE =>
-          throw InvalidAgeException()
-        case _ => age
+          Failure(InvalidAgeException())
+        case _ => Success(age)
       }
       val validatedEmail = email match {
-        case ""                    => throw InvalidEmailException()
-        case e if !e.contains('@') => throw InvalidEmailException()
-        case _                     => email
+        case ""                    => Failure(InvalidEmailException())
+        case e if !e.contains('@') => Failure(InvalidEmailException())
+        case _                     => Success(email)
       }
-      Person(validatedName, validatedAge, validatedEmail)
-    })
-  }
+
+      for {
+        name <- validatedName
+        age <- validatedAge
+        email <- validatedEmail
+      } yield Person(name, age, email)
+    }
 }
 
 case class InvalidNameException() extends Exception
