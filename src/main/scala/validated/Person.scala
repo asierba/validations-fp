@@ -1,8 +1,9 @@
 package validated
 
-import cats.data.Validated
+import cats.data.{Validated, ValidatedNec}
 import cats.data.Validated.{Invalid, Valid}
 import validated.InvalidError.InvalidError
+import cats.implicits._
 
 object InvalidError extends Enumeration {
   type InvalidError = Value
@@ -12,7 +13,6 @@ object InvalidError extends Enumeration {
 case class Person(name: String, age: Int, email: String) {}
 
 object Person {
-
   val MINIMUM_AGE = 1
   val MAXIMUM_AGE = 120
 
