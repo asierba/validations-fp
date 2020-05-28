@@ -1,6 +1,6 @@
 package validated
 
-import cats.data.Validated
+import cats.data.{Chain, Validated, ValidatedNec}
 import cats.data.Validated.{Invalid, Valid}
 import validated.InvalidError.InvalidError
 import org.scalatest.funspec.AnyFunSpec
@@ -53,5 +53,11 @@ class PersonSpec extends AnyFunSpec with Matchers {
 
       person shouldEqual Invalid(InvalidError.InvalidEmailError)
     }
+
+//    it("should concatenate multiple errors") {
+//      val person: ValidatedNec[InvalidError, Person] =
+//        Person.createWithMultipleErrors("", Person.MAXIMUM_AGE + 1, "david@thoughtworks.com")
+//      person shouldEqual Invalid(Chain(InvalidError.InvalidNameError, InvalidError.InvalidNameError))
+//    }
   }
 }
