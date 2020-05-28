@@ -1,9 +1,8 @@
 package validated
 
+import cats.data.Validated.Valid
 import cats.data.{Validated, ValidatedNec}
-import cats.data.Validated.{Invalid, Valid}
 import validated.InvalidError.InvalidError
-import cats.implicits._
 
 object InvalidError extends Enumeration {
   type InvalidError = Value
@@ -18,23 +17,23 @@ object Person {
 
   def create(name: String,
              age: Int,
-             email: String): Validated[InvalidError, Person] = {
+             email: String): ValidatedNec[InvalidError, Person] = {
 
-    val validatedName: Validated[validated.InvalidError.Value, String] =
+    val validatedName: ValidatedNec[validated.InvalidError.Value, String] =
       name match {
-        case "" => Invalid(InvalidError.InvalidNameError)
+        case "" => Validated.invalidNec(InvalidError.InvalidNameError)
         case s if s.charAt(0) != s.toUpperCase().charAt(0) =>
-          Invalid(InvalidError.InvalidNameError)
+          Validated.invalidNec(InvalidError.InvalidNameError)
         case _ => Valid(name)
       }
     val validatedAge = age match {
       case i if i < MINIMUM_AGE || i > MAXIMUM_AGE =>
-        Invalid(InvalidError.InvalidAgeError)
+        Validated.invalidNec(InvalidError.InvalidAgeError)
       case _ => Valid(age)
     }
     val validatedEmail = email match {
-      case ""                    => Invalid(InvalidError.InvalidEmailError)
-      case e if !e.contains('@') => Invalid(InvalidError.InvalidEmailError)
+      case ""                    => Validated.invalidNec(InvalidError.InvalidEmailError)
+      case e if !e.contains('@') => Validated.invalidNec(InvalidError.InvalidEmailError)
       case _                     => Valid(email)
     }
 
