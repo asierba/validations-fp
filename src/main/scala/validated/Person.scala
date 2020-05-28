@@ -1,5 +1,6 @@
 package validated
 
+import cats.implicits._
 import cats.data.Validated.Valid
 import cats.data.{Validated, ValidatedNec}
 import validated.InvalidError.InvalidError
@@ -32,14 +33,15 @@ object Person {
       case _ => Valid(age)
     }
     val validatedEmail = email match {
-      case ""                    => Validated.invalidNec(InvalidError.InvalidEmailError)
-      case e if !e.contains('@') => Validated.invalidNec(InvalidError.InvalidEmailError)
-      case _                     => Valid(email)
+      case "" => Validated.invalidNec(InvalidError.InvalidEmailError)
+      case e if !e.contains('@') =>
+        Validated.invalidNec(InvalidError.InvalidEmailError)
+      case _ => Valid(email)
     }
 
-    validatedName
-      .andThen(_ => validatedAge)
-      .andThen(age => validatedEmail.map(email => Person(name, age, email)))
+    (validatedName, validatedAge, validatedEmail).mapN(
+      (name, age, email) => Person(name, age, email)
+    )
   }
 }
 
