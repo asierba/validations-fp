@@ -38,11 +38,9 @@ object Person {
       case _                     => Valid(email)
     }
 
-    validatedName.andThen(
-      name =>
-        validatedAge
-          .andThen(age => validatedEmail.map(email => Person(name, age, email)))
-    )
+    validatedName
+      .andThen(_ => validatedAge)
+      .andThen(age => validatedEmail.map(email => Person(name, age, email)))
   }
 }
 
