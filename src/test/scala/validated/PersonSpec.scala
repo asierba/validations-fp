@@ -54,10 +54,16 @@ class PersonSpec extends AnyFunSpec with Matchers {
       person shouldEqual Invalid(Chain(InvalidError.InvalidEmailError))
     }
 
-//    it("should concatenate multiple errors") {
-//      val person: ValidatedNec[InvalidError, Person] =
-//        Person.createWithMultipleErrors("", Person.MAXIMUM_AGE + 1, "david@thoughtworks.com")
-//      person shouldEqual Invalid(Chain(InvalidError.InvalidNameError, InvalidError.InvalidAgeError))
-//    }
+    it("should concatenate multiple errors") {
+      val person: ValidatedNec[InvalidError, Person] =
+        Person.create("", Person.MAXIMUM_AGE + 1, "davidthoughtworks.com")
+      person shouldEqual Invalid(
+        Chain(
+          InvalidError.InvalidNameError,
+          InvalidError.InvalidAgeError,
+          InvalidError.InvalidEmailError
+        )
+      )
+    }
   }
 }
